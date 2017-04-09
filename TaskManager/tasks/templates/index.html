@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{% url 'add_task' %}" class="btn btn-primary" role="button">Add Task</a>
+        </div>
+
+        <br/>
+        <br/>
+        <div class="col-md-4 panel panel-default" style="border: 0;">
+            <div class="panel-body"><h2>My Tasks</h2></div>
+
+            {% for task in tasks %}
+                {% if task.self %}
+                    <div class="col-md-12">
+                        <!--Card-->
+                        <div class="card {% if task.done %}bg-success{% endif %}"
+                             style="border:0.5px solid black;padding: 2px;margin: 2px;">
+                            <!--Card content-->
+                            <div class="card-block">
+                                <!--Title-->
+                                <h4 class="card-title"><p>{{ task.title }}</p></h4>
+                                <!--Text-->
+                                <p class="card-text">{{ task.description }}</p>
+                                <a href="{% url 'add_task' %}?task_id={{ task.id }}" class="btn btn-success">Edit</a>
+                                <a href="{% url 'index' %}?mark_done_id={{ task.id }}" class="btn btn-primary">Mark
+                                    Done</a>
+                                <a href="{% url 'index' %}?remove_task_id={{ task.id }}" class="btn btn-danger">Remove
+                                    Task</a>
+                            </div>
+                            <!--/.Card content-->
+
+                        </div>
+                        <!--/.Card-->
+
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+        </div>
+
+        <div class="col-md-4 panel panel-default" style="border: 0;">
+            <div class="panel-body"><h2>All Tasks</h2></div>
+
+            {% for task in tasks %}
+
+                <div class="col-md-12">
+                    <!--Card-->
+                    <div class="card {% if task.done %}bg-success{% endif %}"
+                         style="border:0.5px solid black;padding: 2px;margin: 2px;">
+                        <!--Card content-->
+                        <div class="card-block">
+                            <!--Title-->
+                            <h4 class="card-title"><p>{{ task.title }}</p></h4>
+                            <!--Text-->
+                            <p class="card-text">{{ task.description }}</p>
+
+                            {% if task.self %}
+                                <a href="{% url 'add_task' %}?task_id={{ task.id }}" class="btn btn-success">Edit</a>
+                                {% if not task.done %}
+                                    <a href="{% url 'index' %}?mark_done_id={{ task.id }}" class="btn btn-primary">Mark
+                                        Done</a>{% endif %}
+                                <a href="{% url 'index' %}?remove_task_id={{ task.id }}" class="btn btn-danger">Remove
+                                    Task</a>
+                            {% endif %}
+
+                        </div>
+                        <!--/.Card content-->
+
+                    </div>
+                    <!--/.Card-->
+
+                </div>
+
+            {% endfor %}
+        </div>
+
+        <div class="col-md-4 panel panel-default" style="border: 0;">
+            <div class="panel-body"><h2>Done Tasks</h2></div>
+
+            {% for task in tasks %}
+                {% if task.self and task.done %}
+                    <div class="col-md-12">
+                        <!--Card-->
+                        <div class="card {% if task.done %}bg-success{% endif %}"
+                             style="border:0.5px solid black;padding: 2px;margin: 2px;">
+                            <!--Card content-->
+                            <div class="card-block">
+                                <!--Title-->
+                                <h4 class="card-title"><p>{{ task.title }}</p></h4>
+                                <!--Text-->
+                                <p class="card-text">{{ task.description }}</p>
+                                <a href="{% url 'add_task' %}?task_id={{ task.id }}" class="btn btn-success">Edit</a>
+                                <a href="{% url 'index' %}?remove_task_id={{ task.id }}" class="btn btn-danger">Remove
+                                    Task</a>
+                            </div>
+                            <!--/.Card content-->
+
+                        </div>
+                        <!--/.Card-->
+
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}
